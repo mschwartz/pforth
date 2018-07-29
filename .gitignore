@@ -1,3 +1,5 @@
+build/odroid-go/*.o
+build/odroid-go/build
 build/unix/*.eo
 build/unix/*.o
 build/unix/pfdicdat.h
