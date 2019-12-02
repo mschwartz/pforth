@@ -2,6 +2,8 @@
 
 anew mqtt-test-marker 
 
+include t_file.fth
+
 create topic-buffer 2048 allot
 create message-buffer 2048 allot
 

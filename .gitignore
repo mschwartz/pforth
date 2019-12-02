@@ -4,6 +4,14 @@ build/unix/pfdicdat.h
 build/unix/pforth
 build/unix/pforth.dic
 build/unix/pforth_standalone
+
+build/mqtt/*.eo
+build/mqtt/*.o
+build/mqtt/pfdicdat.h
+build/mqtt/pforth
+build/mqtt/pforth.dic
+build/mqtt/pforth_standalone
+
 build/win32/**/.vs
 build/win32/**/Debug
 build/win32/**/Release

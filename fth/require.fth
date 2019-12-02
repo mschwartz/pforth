@@ -31,4 +31,16 @@ private{
 : REQUIRED ( i*x c-addr u -- j*x ) 2dup included? IF 2drop ELSE included THEN ;
 : REQUIRE ( i*x "name" -- i*x ) (parse-name) required ;
 
+create require.filename 2048 allot
+
+ : REQUIRE-ONCE ( c_addr u -- )
+     S" /usr/local/pforth/" require.filename  place
+     require.filename $APPEND
+     require.filename cr count type
+     require.filename count included
+
+\     $append
+ ;
+
+
 privatize

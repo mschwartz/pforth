@@ -147,3 +147,11 @@ clean:
 	rm -f $(PFDICDAT) $(FTHDIR)/$(PFDICDAT)
 	rm -f $(PFORTHDIC) $(FTHDIR)/$(PFORTHDIC)
 	rm -f $(PFDICAPP)
+
+install: all
+	mkdir -p /usr/local/pforth
+	cp pforth_standalone /usr/local/bin/pforth
+	cp pforth.dic /usr/local/bin
+	cp -rp ../../fth /usr/local/pforth
+	cp -rp ../../lib /usr/local/pforth
+

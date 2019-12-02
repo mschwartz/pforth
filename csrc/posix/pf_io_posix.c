@@ -111,6 +111,7 @@ void sdTerminalInit(void)
 {
     struct termios term;
 
+    printf("INIT TERMINAL\n");
     stdin_is_tty = isatty(STDIN_FILENO);
     if (stdin_is_tty)
     {
