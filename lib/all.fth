@@ -1,4 +1,4 @@
 anew lib-all-task
 
-." all!"
+S" lib/include.fth" require-once
 
