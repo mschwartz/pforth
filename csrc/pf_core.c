@@ -351,7 +351,6 @@ cell_t pfIncludeFile( const char *FileName )
     FileStream *fid;
     cell_t Result;
     char  buffer[32];
-    char work[2048], path[2048];
     cell_t numChars, len;
 
 /* Open file. */

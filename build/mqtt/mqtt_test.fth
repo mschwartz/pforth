@@ -2,8 +2,8 @@
 
 anew mqtt-test-marker 
 
-create topic-buffer 2048 allot
-create message-buffer 2048 allot
+create topic-buffer 32 * 1024 allot
+create message-buffer 32 * 1024 allot
 
 : r-on s" on" ;
 : r-off s" off" ;
@@ -16,11 +16,12 @@ variable buffer-ptr
 ;
 
 : connect
-  S" nuc1" S" hubitat/#" MQTT-CONNECT if
+  S" nuc1" S" nest/#" MQTT-CONNECT if
   	." connected!" cr
-    0sp
+\    0sp
   then
-  2 sleep
+  2 sleep \ sleep 2 seconds to allow conneciton
+  \ turn on ceiling fan light
   false r-on r-ceiling-fan-light-set .s mqtt-publish
 \   false S" on" S" hubitat/Ceiling Fan Light/set/switch" mqtt-publish
   begin
@@ -34,5 +35,7 @@ variable buffer-ptr
   again
 ;
 
+	
 \ main program
 connect
+

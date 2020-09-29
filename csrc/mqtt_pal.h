@@ -136,7 +136,7 @@ SOFTWARE.
  * 
  * @returns The number of bytes sent if successful, an \ref MQTTErrors otherwise.
  */
-ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const void* buf, size_t len, int flags);
+ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const unsigned char* buf, size_t len, int flags);
 
 /**
  * @brief Non-blocking receive all the byte available.
@@ -149,6 +149,6 @@ ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const void* buf, size_t len,
  * 
  * @returns The number of bytes received if successful, an \ref MQTTErrors otherwise.
  */
-ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, void* buf, size_t bufsz, int flags);
+ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, unsigned char* buf, size_t bufsz, int flags);
 
 #endif

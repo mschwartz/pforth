@@ -82,6 +82,7 @@ static cell_t forth_mqtt_connect(cell_t hostname, cell_t hlen, cell_t topic, cel
   reconnect_state.hostname = strdup(buf);
   reconnect_state.port = "1883";
   {
+    /* convert forth string to C string */
     int i;
     char *dst = buf, *src = (char *)topic;
     for (i = 0; i < tlen; i++) {
@@ -255,7 +256,7 @@ static void publish_callback(void **unused, struct mqtt_response_publish *publis
 static void *client_refresher(void *client) {
   while (1) {
     mqtt_sync((struct mqtt_client *)client);
-    usleep(100000U);
+    usleep(10U);
   }
   return NULL;
 }

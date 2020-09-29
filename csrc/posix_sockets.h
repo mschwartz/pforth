@@ -9,17 +9,19 @@
 #endif
 #include <fcntl.h>
 
+extern int open_nb_socket(const char *addr, const char *port);
+
 /*
     A template for opening a non-blocking POSIX socket.
 */
 int open_nb_socket(const char* addr, const char* port) {
     struct addrinfo hints = {0};
-
-    hints.ai_family = AF_UNSPEC; /* IPv4 or IPv6 */
-    hints.ai_socktype = SOCK_STREAM; /* Must be TCP */
     int sockfd = -1;
     int rv;
     struct addrinfo *p, *servinfo;
+
+    hints.ai_family = AF_UNSPEC; /* IPv4 or IPv6 */
+    hints.ai_socktype = SOCK_STREAM; /* Must be TCP */
 
     /* get address information */
     rv = getaddrinfo(addr, port, &hints, &servinfo);

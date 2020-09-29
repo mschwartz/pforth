@@ -73,7 +73,7 @@ ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, void* buf, size_t bufsz, int
 
 #include <errno.h>
 
-ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const void* buf, size_t len, int flags) {
+ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const unsigned char* buf, size_t len, int flags) {
     size_t sent = 0;
     while(sent < len) {
         ssize_t tmp = send(fd, buf + sent, len - sent, flags);
@@ -85,8 +85,8 @@ ssize_t mqtt_pal_sendall(mqtt_pal_socket_handle fd, const void* buf, size_t len,
     return sent;
 }
 
-ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, void* buf, size_t bufsz, int flags) {
-    const void *const start = buf;
+ssize_t mqtt_pal_recvall(mqtt_pal_socket_handle fd, unsigned char* buf, size_t bufsz, int flags) {
+    const unsigned char *const start = buf;
     ssize_t rv;
     do {
         rv = recv(fd, buf, bufsz, flags);
