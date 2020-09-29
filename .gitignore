@@ -18,4 +18,4 @@ build/win32/**/Release
 fth/fatest1.txt
 fth/pforth.dic
 **/.DS_Store
-
+.ccls-cache

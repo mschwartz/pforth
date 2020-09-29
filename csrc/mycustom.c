@@ -50,6 +50,7 @@ struct reconnect_state_t {
   uint8_t *recvbuf;
   size_t recvbufsz;
 };
+
 static struct reconnect_state_t reconnect_state;
 static uint8_t sendbuf[2048];
 static uint8_t recvbuf[1024];
@@ -336,9 +337,9 @@ Err CompileCustomFunctions(void) {
   Err err;
   int i = 0;
   /* Compile Forth words that call your custom functions.
-** Make sure order of functions matches that in LoadCustomFunctionTable().
-** Parameters are: Name in UPPER CASE, Function, Index, Mode, NumParams
-*/
+   ** Make sure order of functions matches that in LoadCustomFunctionTable().
+   ** Parameters are: Name in UPPER CASE, Function, Index, Mode, NumParams
+   */
   err = CreateGlueToC("SLEEP", i++, C_RETURNS_VOID, 1);
   if (err < 0)
     return err;
