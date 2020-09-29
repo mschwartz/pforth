@@ -8,14 +8,17 @@
 \ Author: Phil Burk
 \ Copyright 1994 3DO, Phil Burk, Larry Polansky, David Rosenboom
 \
-\ The pForth software code is dedicated to the public domain,
-\ and any third party may reproduce, distribute and modify
-\ the pForth software code or any derivative works thereof
-\ without any compensation or license.  The pForth software
-\ code is provided on an "as is" basis without any warranty
-\ of any kind, including, without limitation, the implied
-\ warranties of merchantability and fitness for a particular
-\ purpose and their equivalents under the laws of any jurisdiction.
+\ Permission to use, copy, modify, and/or distribute this
+\ software for any purpose with or without fee is hereby granted.
+\
+\ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+\ WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+\ WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+\ THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+\ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+\ FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+\ CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+\ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 \
 \ MOD: PLB 1/16/87 Use abort" instead of er.report.
 \ MOD: PLB 2/19/87 Made OB.MEMBER immediate, use literal.
@@ -41,12 +44,18 @@ decimal
 ;
 
 \ Variables shared with object oriented code.
-    VARIABLE OB-STATE  ( Compilation state. )
-    VARIABLE OB-CURRENT-CLASS  ( ABS_CLASS_BASE of current class )
-    1 constant OB_DEF_CLASS   ( defining a class )
-    2 constant OB_DEF_STRUCT  ( defining a structure )
+VARIABLE OB-STATE  ( Compilation state. )
+VARIABLE OB-CURRENT-CLASS  ( ABS_CLASS_BASE of current class )
+1 constant OB_DEF_CLASS   ( defining a class )
+2 constant OB_DEF_STRUCT  ( defining a structure )
 
-4 constant OB_OFFSET_SIZE
+\ A member contains:
+\   cell size of data in bytes (1, 2, cell)
+\   cell offset within structure
+
+cell 1- constant CELL_MASK
+cell negate constant -CELL
+cell constant OB_OFFSET_SIZE
 
 : OB.OFFSET@ ( member_def -- offset ) @ ;
 : OB.OFFSET, ( value -- ) , ;
@@ -60,7 +69,7 @@ decimal
     ABS     ( -- |+-b| )
     ob-current-class @ ( -- b addr-space)
     tuck @          ( as #b c , current space needed )
-    over 3 and 0=        ( multiple of four? )
+    over CELL_MASK and 0=        ( multiple of cell? )
     IF
         aligned
     ELSE
@@ -147,7 +156,7 @@ decimal
 
 \ Aliases
 : APTR    ( <name> -- ) long ;
-: RPTR    ( <name> -- ) -4 bytes ; \ relative relocatable pointer 00001
+: RPTR    ( <name> -- ) -cell bytes ; \ relative relocatable pointer 00001
 : ULONG   ( <name> -- ) long ;
 
 : STRUCT ( <struct> <new_ivar> -- , define a structure as an ivar )

@@ -51,7 +51,7 @@ KH-HISTORY kh_history_size erase
 \ The most recent entry is put at the beginning,
 \ older entries are shifted up.
 
-4 constant KH_LINE_EXTRA_SIZE ( 2 count bytes plus 2 size bytes )
+4 constant KH_LINE_EXTRA_SIZE ( 2 count bytes plus 2 line_number bytes )
 
 : KH-END ( -- addr , end of history buffer )
     kh-history kh_history_size +
@@ -345,7 +345,6 @@ variable KH-INSIDE        ( true if we are scrolling inside the history buffer )
     ENDCASE
 ;
 
-
 : KH.SPECIAL.KEY ( char  -- true | false , handle fkeys or arrows, true if handled )
     true >r
     CASE
@@ -495,6 +494,7 @@ variable KH-INSIDE        ( true if we are scrolling inside the history buffer )
     THEN
 ;
 
+privatize
 
 : AUTO.INIT
     auto.init

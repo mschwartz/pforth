@@ -4,14 +4,17 @@
 \ Author: Phil Burk
 \ Copyright 1994 3DO, Phil Burk, Larry Polansky, David Rosenboom
 \
-\ The pForth software code is dedicated to the public domain,
-\ and any third party may reproduce, distribute and modify
-\ the pForth software code or any derivative works thereof
-\ without any compensation or license.  The pForth software
-\ code is provided on an "as is" basis without any warranty
-\ of any kind, including, without limitation, the implied
-\ warranties of merchantability and fitness for a particular
-\ purpose and their equivalents under the laws of any jurisdiction.
+\ Permission to use, copy, modify, and/or distribute this
+\ software for any purpose with or without fee is hereby granted.
+\
+\ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+\ WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+\ WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+\ THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+\ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+\ FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+\ CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+\ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 \
 \ 00001 9/14/92 Added call, 'c w->s
 \ 00002 11/23/92 Moved redef of : to loadcom.fth
@@ -122,18 +125,18 @@ variable rand-seed here rand-seed !
 : B->S ( c -- c' , sign extend byte )
     dup $ 80 and
     IF
-        $ FFFFFF00 or
+        [ $ 0FF invert ] literal or
     ELSE
-        $ 000000FF and
+        $ 0FF and
     THEN
 ;
-: W->S ( 16bit-signed -- 32bit-signed )
+: W->S ( 16bit-signed -- cell-signed )
     dup $ 8000 and
-    if
-        $ FFFF0000 or
+    IF
+        [ $ 0FFFF invert ] literal or
     ELSE
-        $ 0000FFFF and
-    then
+        $ 0FFFF and
+    THEN
 ;
 
 : WITHIN { n1 n2 n3 -- flag }

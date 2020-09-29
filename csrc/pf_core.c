@@ -7,14 +7,17 @@
 ** Author: Phil Burk
 ** Copyright 1994 3DO, Phil Burk, Larry Polansky, David Rosenboom
 **
-** The pForth software code is dedicated to the public domain,
-** and any third party may reproduce, distribute and modify
-** the pForth software code or any derivative works thereof
-** without any compensation or license.  The pForth software
-** code is provided on an "as is" basis without any warranty
-** of any kind, including, without limitation, the implied
-** warranties of merchantability and fitness for a particular
-** purpose and their equivalents under the laws of any jurisdiction.
+** Permission to use, copy, modify, and/or distribute this
+** software for any purpose with or without fee is hereby granted.
+**
+** THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+** WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+** WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+** THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+** CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+** FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+** CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+** OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 **
 ****************************************************************
 ** 940502 PLB Creation.
@@ -39,18 +42,18 @@
 ** Global Data
 ***************************************************************/
 
-char          gScratch[TIB_SIZE];
+char            gScratch[TIB_SIZE];
 pfTaskData_t   *gCurrentTask = NULL;
 pfDictionary_t *gCurrentDictionary;
-cell_t         gNumPrimitives;
+cell_t          gNumPrimitives;
 
-ExecToken     gLocalCompiler_XT;   /* custom compiler for local variables */
-ExecToken     gNumberQ_XT;         /* XT of NUMBER? */
-ExecToken     gQuitP_XT;           /* XT of (QUIT) */
-ExecToken     gAcceptP_XT;         /* XT of ACCEPT */
+ExecToken       gLocalCompiler_XT;   /* custom compiler for local variables */
+ExecToken       gNumberQ_XT;         /* XT of NUMBER? */
+ExecToken       gQuitP_XT;           /* XT of (QUIT) */
+ExecToken       gAcceptP_XT;         /* XT of ACCEPT */
 
 /* Depth of data stack when colon called. */
-cell_t         gDepthAtColon;
+cell_t          gDepthAtColon;
 
 /* Global Forth variables. */
 cell_t          gVarContext;      /* Points to last name field. */
@@ -64,18 +67,23 @@ cell_t          gVarQuiet;        /* Suppress unnecessary messages, OK, etc. */
 cell_t          gVarReturnCode;   /* Returned to caller of Forth, eg. UNIX shell. */
 
 /* data for INCLUDE that allows multiple nested files. */
-IncludeFrame  gIncludeStack[MAX_INCLUDE_DEPTH];
-cell_t         gIncludeIndex;
+IncludeFrame    gIncludeStack[MAX_INCLUDE_DEPTH];
+cell_t          gIncludeIndex;
 
 static void pfResetForthTask( void );
 static void pfInit( void );
 static void pfTerm( void );
 
-/* TODO move to pf_config.h header. */
 #define DEFAULT_RETURN_DEPTH (512)
 #define DEFAULT_USER_DEPTH (512)
-#define DEFAULT_HEADER_SIZE (120000)
-#define DEFAULT_CODE_SIZE (300000)
+
+#ifndef PF_DEFAULT_HEADER_SIZE
+#define PF_DEFAULT_HEADER_SIZE (120000)
+#endif
+
+#ifndef PF_DEFAULT_CODE_SIZE
+#define PF_DEFAULT_CODE_SIZE (300000)
+#endif
 
 /* Initialize globals in a function to simplify loading on
  * embedded systems which may not support initialization of data section.
@@ -486,7 +494,7 @@ ThrowCode pfDoForth( const char *DicFileName, const char *SourceName, cell_t IfI
         if( IfInit )
         {
             pfDebugMessage("Build dictionary from scratch.\n");
-            dic = pfBuildDictionary( DEFAULT_HEADER_SIZE, DEFAULT_CODE_SIZE );
+            dic = pfBuildDictionary( PF_DEFAULT_HEADER_SIZE, PF_DEFAULT_CODE_SIZE );
         }
         else
 #else

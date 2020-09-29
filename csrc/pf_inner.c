@@ -5,14 +5,17 @@
 ** Author: Phil Burk
 ** Copyright 1994 3DO, Phil Burk, Larry Polansky, David Rosenboom
 **
-** The pForth software code is dedicated to the public domain,
-** and any third party may reproduce, distribute and modify
-** the pForth software code or any derivative works thereof
-** without any compensation or license.  The pForth software
-** code is provided on an "as is" basis without any warranty
-** of any kind, including, without limitation, the implied
-** warranties of merchantability and fitness for a particular
-** purpose and their equivalents under the laws of any jurisdiction.
+** Permission to use, copy, modify, and/or distribute this
+** software for any purpose with or without fee is hereby granted.
+**
+** THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+** WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+** WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+** THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+** CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+** FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+** CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+** OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 **
 ****************************************************************
 **
@@ -49,6 +52,7 @@
 #define M_DUP    PUSH_TOS;
 #define M_DROP   { TOS = M_POP; }
 
+#define ASCII_EOT   (0x04)
 
 /***************************************************************
 ** Macros for Floating Point stack access.
@@ -211,8 +215,8 @@ static int UdIsUint64( ucell_t Lo, ucell_t Hi )
         : Hi == 0);
 }
 
-static const char *pfSelectFileModeCreate(cell_t fam );
-static const char *pfSelectFileModeOpen(cell_t fam );
+static const char *pfSelectFileModeCreate( cell_t fam );
+static const char *pfSelectFileModeOpen( cell_t fam );
 
 /**************************************************************/
 static const char *pfSelectFileModeCreate( cell_t fam )
@@ -1264,6 +1268,9 @@ DBUG(("XX ah,m,l = 0x%8x,%8x,%8x - qh,l = 0x%8x,%8x\n", ah,am,al, qh,ql ));
         case ID_KEY:
             PUSH_TOS;
             TOS = ioKey();
+            if (TOS == ASCII_EOT) {
+                M_THROW(THROW_BYE);
+            }
             endcase;
 
 #ifndef PF_NO_SHELL

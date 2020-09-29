@@ -7,14 +7,17 @@
 ** Author: Phil Burk
 ** Copyright 1994 3DO, Phil Burk, Larry Polansky, David Rosenboom
 **
-** The pForth software code is dedicated to the public domain,
-** and any third party may reproduce, distribute and modify
-** the pForth software code or any derivative works thereof
-** without any compensation or license.  The pForth software
-** code is provided on an "as is" basis without any warranty
-** of any kind, including, without limitation, the implied
-** warranties of merchantability and fitness for a particular
-** purpose and their equivalents under the laws of any jurisdiction.
+** Permission to use, copy, modify, and/or distribute this
+** software for any purpose with or without fee is hereby granted.
+**
+** THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+** WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+** WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+** THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+** CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING
+** FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+** CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+** OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 **
 ****************************************************************
 ** 941004 PLB Extracted IO calls from pforth_main.c
@@ -1156,9 +1159,14 @@ cell_t ffRefill( void )
     if( gCurrentTask->td_InputStream == PF_STDIN )
     {
     /* ACCEPT is deferred so we call it through the dictionary. */
+        ThrowCode throwCode;
         PUSH_DATA_STACK( gCurrentTask->td_SourcePtr );
         PUSH_DATA_STACK( TIB_SIZE );
-        pfCatch( gAcceptP_XT );
+        throwCode = pfCatch( gAcceptP_XT );
+        if (throwCode) {
+            Result = throwCode;
+            goto error;
+        }
         Num = POP_DATA_STACK;
         if( Num < 0 )
         {
