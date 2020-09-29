@@ -78,11 +78,9 @@ PFOBJS     = $(PFSOURCE:.c=.o)
 PFEMBOBJS  = $(PFSOURCE:.c=.eo)
 
 %.o:	%.c $(PFINCLUDES)
-#.c.o: $(PFINCLUDES)
 	$(COMPILE) -c -o $@ $<
 
 %.eo:	%.c $(PFINCLUDES)
-#.c.eo: $(PFINCLUDES) pfdicdat.h
 	$(COMPILE) $(EMBCCOPTS) -c -o $@ $<
 
 .PHONY: all clean test
